@@ -1,0 +1,34 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  {% if form %}
+  {% for i in form %}
+  <div class="mt-5 card bg-secondary-emphasis text-dark shadow" style="width: 80%;border:1px solid rgb(172, 167, 167)">
+    <div class="row card-header">
+      <div class="col-9">
+        <h5 class="card-title pt-2">{{i.title}}</h5>
+      </div>
+      <div class="col-3"><span class="float-right pt-4"><i class="fa-solid fa-calendar-days"></i> {{i.date}}</span>
+      </div>
+    </div>
+    <img class="card-img-top" src="{{i.image.url}}" alt="Card image cap" style="width:100%">
+    <div class="card-footer">
+      <p class="card-text">{{i.description}}</p>
+    </div>
+    <div class="card-footer text-center">
+      <a href="{% url 'editblogs' i.id %}" class="btn btn-success pr-5 pl-5 mr-3"><i
+          class="fa-regular fa-pen-to-square"></i> Edit Blog </a>
+      <a href="{% url 'deleteblogs' i.id %}" class="btn btn-danger pl-5 pr-5 ml-3"><i class="fa-solid fa-trash-can"></i>
+        Delete Blog </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center pt-5  mt-5">
+  <h1 class="">You don't have any Blog, Create New One</h1>
+  <a href="{% url 'addblog'  %}" class="btn btn-success btn-lg  mt-5">Add Blog </a>
+</div>
+{%endif%}
+{%endblock%}

@@ -1,0 +1,65 @@
+{% extends 'navbar.html' %}
+{% block content %}
+<style>
+  .forms {
+    width: 420px;
+  }
+
+  .reg {
+    height: 903px;
+  }
+</style>
+<section class="reg bg-image"
+  style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-2">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body pt-5 pb-3 pl-5 pr-5">
+              <h2 class=" text-center pb-2 ">User Login</h2>
+              <form method="POST" action="" class="justify-content-center">
+                {%csrf_token%}
+                <div class="forms form-outline mb-2">
+                  {{form.username}}
+                  <label class="form-label" for="form3Example3cg">Username</label>
+                </div>
+                <div class="forms form-outline mb-1">
+                  {{form.password}}
+                  <label class="form-label" for="form3Example4cg">Password</label>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 ">Login</button>
+              </form>
+            </div>
+            <div class="text-center pt-3 pb-2">
+              Don't have an account? <a href="{% url 'reg' %}">Register</a>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+<div>
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <div>
+    <script>
+      alertify.success('{{message}}')
+    </script>
+  </div>
+  {%else%}
+  <div>
+    <script>
+      alertify.error('{{message}}')
+    </script>
+  </div>
+  {% endif%}
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

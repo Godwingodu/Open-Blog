@@ -1,0 +1,29 @@
+{% extends 'navbar.html' %}
+{% block content %}
+<style>
+    #sixthHomejt {
+        background-image: url('https://d1o422jskmy5yw.cloudfront.net/wp-content/uploads/2017/06/desk.jpg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        color: rgb(0, 0, 0);
+        height: 903px;
+    }
+</style>
+<div class="mask text-center pb-5" id="sixthHomejt">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="pt-5 align-middle">
+        <h1 class="pt-5 display-3 align-text-bottom"><strong>Publish your passions, your way</strong></h1>
+        <h3 class="pt-3">Create a unique and beautiful blog easily.</h3>
+        <a href="{% url 'addblog'  %}" class="btn btn-success mt-3 align-text-bottom">Add Blog </a>
+    </div>
+</div>
+{% endblock %}

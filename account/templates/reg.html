@@ -1,0 +1,81 @@
+{% extends 'navbar.html' %}
+{% block content %}
+<style>
+  .forms {
+    width: 278px;
+  }
+
+  .reg {
+    height: 903px;
+  }
+</style>
+<section class="reg bg-image"
+  style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-2">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-8">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body pt-5 pb-3 pl-5 pr-5">
+              <h2 class=" text-center mb-5">User Registration</h2>
+              <form method="POST" action="" class="justify-content-center ">
+                {%csrf_token%}
+                <div class="border">
+                  <div class="col form-row">
+                    <div class="col form-group form-outline mb-1">
+                      <label class="form-label">First Name:</label>
+                      <div class="forms">{{form.first_name}}</div>
+                    </div>
+                    <div class="col form-group form-outline mb-1">
+                      <label class="form-label">Last Name:</label>
+                      <div class="forms">{{form.last_name}} </div>
+                    </div>
+                  </div>
+                  <div class="col form-row">
+                    <div class="col form-group form-outline mb-1">
+                      <label class="form-label">Enter Username :</label>
+                      <div class="forms"> {{form.username}} </div>
+                    </div>
+                    <div class="col form-group form-outline mb-1">
+                      <label class="form-label">Enter Your Email: </label>
+                      <div class="forms">{{form.email}} </div>
+                    </div>
+                  </div>
+                  <div class="col form-row">
+                    <div class="col form-group">
+                      <label>Password:</label>
+                      <div class="forms"> {{form.password1}} </div>
+                    </div>
+                    <div class="col form-group">
+                      <label>Confirm Password:</label>
+                      <div class="forms">{{form.password2}} </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center pt-3">
+                  <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4  "><i
+                      class="fa-solid fa-user-plus fa-sm"></i> Register</button>
+              </form>
+            </div>
+            <div class="text-center pt-3 pb-2">
+              Already have an account? <a href="{% url 'login' %}">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+<div>
+  <script>
+    alertify.error('{{error}}')
+  </script>
+</div>
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid pl-5 pr-5">
+  <div class="row  pl-5 pr-5 ml-5 pt-5 ">
+    <div class="col-7 pl-5 ml-3 mr-3 " style="overflow-y: auto; height: 900px;">
+    {% if data %}
+      {% for i in data %}
+      <div class="pt-4">
+        <div class="card bg-secondary-emphasis text-dark shadow"
+          style="width: 100%; border:1px solid rgb(172, 167, 167)">
+          <div class="card-header d-flex justify-content-start">
+            {% if i.user.p_user.profile_pic.url%}
+            <img class="rounded-circle" height="40px" width="40px" src="{{i.user.p_user.profile_pic.url}}" alt="">
+            {%else%}
+            <i class="fa-regular fa-user fa-sm pt-3 "></i>
+            {%endif%}
+            <div class="pl-2 pt-1">
+              {% if request.user == i.user %}
+              <h5> Mine</h5>
+              {% else %}
+              <h5> {{i.user.first_name}} {{i.user.last_name}}</h5>
+              {% endif %}
+            </div>
+          </div>
+          <img class="card-img-top" src="{{i.image.url}}" alt="Card image cap" style="width:100%; height:100%; ">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+            {% if request.user in i.liked_by.all %}
+            <a href="{% url 'removelike' i.id %}" class=""><i class="fa-solid fa-heart fa-lg"
+                style="color: #ed263a;"></i></a>
+            {% else %}
+            <a href="{% url 'addlike' i.id %}" class=""><i class="fa-regular fa-heart fa-lg text-dark"></i></a>
+            {%endif%}
+            <a href="#c{{i.id}}" type="button" data-toggle="collapse" data-target="#c{{i.id}}" aria-expanded="false"
+              aria-controls="collapseExample" class="pl-2">
+              <i class="fa-regular fa-comment fa-lg text-dark"></i></a>
+            </div>
+            <div class="col">
+            <div class="col d-flex justify-content-end "><i class="fa-regular fa-calendar-days pr-2 pt-1"></i>{{i.date}}</div>
+          </div>
+          </div>
+          <div>
+            {% if i.alllikes.count == 2 and request.user.username in i.liked_users %}
+            <p class=" mt-2">Liked by <b>you</b> and <b>{{i.alllikes.first}}</b></p>
+            {% elif i.alllikes.count == 2 %}
+            <p class=" mt-2">Liked by {% for liked_user in i.liked_users %}
+              <b>{{liked_user}}</b>
+              {% endfor %}
+              {% elif i.alllikes.count >= 3 %}
+            <div class="dropdown">
+              <span class=" mt-2">Liked by <b>{{i.alllikes.first}}</b> and <b>{{i.alllikes.count}}</b></span>
+              <span type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <b>others</b>
+              </span>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                {% for liked_user in i.liked_users %}
+                <li class="dropdown-item"><b>{{liked_user}}</b></li>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+            {% for liked_user in i.liked_users %}
+            {% if i.alllikes.count == 1 and liked_user == request.user.username %}
+            <p class=" mt-2">Liked by <b>you</b> only</p>
+            {% elif i.alllikes.count == 1 %}
+            <p class=" mt-2">Liked by <b>{{liked_user}}</b> only</p>
+            {% endif %}
+            {% endfor %}
+          </div>
+   </div>
+          <ul class="list-group list-group-flush ">
+            <li class="list-group-item"> <h4 class="card-title">{{i.title}}</h4>
+              <p class="card-text">{{i.description}}</p>
+            </li>
+          </ul>
+          <div class="card-footer">
+            <div class="collapse" id="c{{i.id}}">
+              <div class="card">
+                <div class="card-body text-dark">
+                  {% if i.id == comment.blog.id%}
+                  <h4 class="text-dark pl-3 pt-2">Comments</h4>
+                  {%endif%}
+                  {%for c in comment%}
+                  {% if i.id == c.blog.id%} 
+                    <div class="mt-3">
+                  <div class="card-text text-bold  ml-3 d-flex justify-content-start"> {% if c.user.p_user.profile_pic.url%}
+                    <img class="rounded-circle" height="25px" width="25px" src="{{ c.user.p_user.profile_pic.url}}" alt="">
+                    {%else%}
+                    <i class="fa-regular fa-user fa-sm pt-2 pr-1 "></i>
+                    {%endif%}
+                    <h6 class="pl-1">{{ c.user.first_name}}</h6>
+                  </div>
+                  <p class="card-title ml-4">{{c.comment}}</p>
+                  <p class=" text-right mr-4"><small>            <div class="col d-flex justify-content-end "><i class="fa-regular fa-calendar-days pr-2 pt-1"></i>{{c.date}}</div>
+                  </small></p>
+                  <div style="border-top:1px solid grey" class=""></div>
+                </div>
+                  {%endif%}
+                  {%endfor%}
+                </div>
+              </div>
+              <div class="card card-body text-dark mt-3">
+                <form method="post" action="{% url 'comment' i.id %}">
+                  {%csrf_token%}
+                  {{form.as_p}}
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-sm ">Comment</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+      {% endfor %}
+      {%else%}
+      <div class="text-center pt-5  mt-5">
+        <h3 class="pt-5">No Blogs to display, Follow people to see their Blogs</h3>
+        <a href="{% url 'addblog'  %}" class="btn btn-success btn  mt-5">Add Blog </a>
+      </div>
+      {%endif%}
+    </div>
+    <div class="col-4  ml-3" style=" border-left: 1px solid rgb(167, 165, 165); ">
+   <h3 class="pl-4">Connect People</h3>
+      {% for user in users%}
+      <div class="row pt-3 pl-4 pr-5  d-flex justify-content-start text-center">
+        <div class="col-2 pl-3">
+          {% if user.p_user.profile_pic.url%}
+          <img class="rounded-circle" height="40px" width="40px" src="{{user.p_user.profile_pic.url}}" alt="">
+          {%else%}
+          <img class="card rounded-circle rounded mx-auto d-block"  height="40px" width="40px" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt=""></i>
+          {%endif%}
+        </div>
+        <div class="col-5 text-capitalize pt-2">
+          <h6><a class="text-dark" href="{% url 'allusersprofile' user.id %}">{{user.first_name}} {{user.last_name}}</a></h6>
+        </div>
+        <div class="col-5 pr-3">
+          {% if user in following %}
+          <a href="{% url 'follow' user.id %}" class="btn btn-success"><i class="fa fa-check"
+              aria-hidden="true"></i>&emsp13;Following</a>
+          {% else %}
+          <a href="{% url 'follow' user.id %}" class="btn btn-primary"><i class="fa fa-plus"
+              aria-hidden="true"></i>&emsp13;&emsp13;Follow</a>
+          {% endif %}
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+  </div>
+</div>
+<div>
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <div>
+    <script>
+      alertify.success('{{message}}')
+    </script>
+  </div>
+  {% endif%}
+  {% endfor %}
+  {% endif %}
+</div>
+{%endblock%}

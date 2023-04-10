@@ -1,0 +1,25 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+  <h2 class="text-center pt-5 font-weight-italic">Delete Blog</h2>
+  <p class="text-center">Are you sure,You want to delete?</p>
+  <div class="card container pt-2" style="width: 36rem; border: 1px solid black;">
+    <form action="" method="post" enctype="multipart/form-data">
+      {%csrf_token%}
+      <img class="card-img-top" height="400px" width="250px" src="{{object.image.url}}" alt=""></i>
+      <div class="card-body">
+        <h5 class="card-title"> {{object.title}} </h5>  <!-- we write the function in delete view so we call as object -->
+        <p class="card-text"><i class="fa-solid fa-calendar-days"></i> {{object.date}}</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"> {{object.description}}</li>
+        <li class="list-group-item">
+          <div class=" text-center pt-3">
+            <button type="submit" class="btn btn-danger btn-block  ">Confirm Delete</button>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+  {%endblock%}
